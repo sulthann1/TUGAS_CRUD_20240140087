@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class KtpMapper {
     public KtpDto toDto(Ktp ktp) {
-    KtpDto dto = new KtpDto();
+        KtpDto dto = new KtpDto();
         dto.setId(ktp.getId());
         dto.setNomorKtp(ktp.getNomorKtp());
         dto.setNamaLengkap(ktp.getNamaLengkap());
@@ -15,7 +15,7 @@ public class KtpMapper {
         dto.setTanggalLahir(ktp.getTanggalLahir());
         dto.setJenisKelamin(ktp.getJenisKelamin());
         return dto;
-}
+    }
 
     public Ktp toEntity(KtpDto dto) {
         Ktp ktp = new Ktp();
