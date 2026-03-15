@@ -1,4 +1,4 @@
-package com.crudktp.praktikum.util;
+package com.crudktp.praktikum.service.Impl;
 
 import com.crudktp.praktikum.dto.KtpDto;
 import com.crudktp.praktikum.entity.Ktp;
