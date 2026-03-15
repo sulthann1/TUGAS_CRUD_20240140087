@@ -10,8 +10,8 @@ Repositori ini berisi hasil pengerjaan tugas untuk membangun aplikasi CRUD (Crea
 
 ---
 
-## 📸 Preview Aplikasi
-*(Ganti tulisan ini dengan men-drag and drop gambar screenshot website KTP-mu saat mengedit di GitHub)*
+## 📸 Preview 
+*![preview.png](preview.png)*
 ---
 
 ## 🛠️ Teknologi yang Digunakan
