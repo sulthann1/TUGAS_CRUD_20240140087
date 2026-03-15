@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Table(name = "Ktp")
 public class Ktp {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(unique = true, nullable = false)
