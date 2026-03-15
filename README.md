@@ -1,97 +1,84 @@
-# Tugas CRUD KTP - Aplikasi Penduduk Berbasis Web
+# Laporan Tugas - Manajemen Data KTP (REST API & AJAX)
 
-Repositori ini berisi proyek pembuatan aplikasi Sistem Manajemen KTP (Kartu Tanda Penduduk) menggunakan arsitektur pemisahan *Backend* dan *Frontend*. Proyek ini disusun untuk memenuhi tugas praktikum.
+Repositori ini berisi hasil pengerjaan tugas untuk membangun aplikasi CRUD (Create, Read, Update, Delete) Sistem Manajemen KTP. Proyek ini memisahkan sisi **backend** menggunakan arsitektur REST API (Spring Boot) dan sisi **frontend** menggunakan antarmuka HTML/CSS Modern yang dihubungkan secara asinkron melalui JQuery AJAX.
 
-**Nama:** Sulthan Awaliya Firmansyah 
-**NIM:** 20240140087
-
----
-
-## 🚀 Teknologi yang Digunakan
-* **Backend:** Java, Spring Boot, Spring Data JPA, Hibernate
-* **Database:** MySQL
-* **Frontend:** HTML5, CSS3 (Modern UI), JavaScript, JQuery (AJAX)
-* **Lainnya:** Lombok, REST API API Architecture
+### 👤 Identitas
+* **Nama:** Sulthan Awaliya Firmansyah
+* **NIM:** 20240140087
+* **Program Studi:** Teknologi Informasi
+* **Universitas:** Universitas Muhammadiyah Yogyakarta
 
 ---
 
-## 📸 Screenshot Aplikasi
+## 📸 Preview Aplikasi
+*(Ganti tulisan ini dengan men-drag and drop gambar screenshot website KTP-mu saat mengedit di GitHub)*
+---
 
+## 🛠️ Teknologi yang Digunakan
 
-![Tampilan Halaman KTP](![Screenshot 2026-03-15 092759.png](../../Users/Lenovo/OneDrive/%EC%82%AC%EC%A7%84/Screenshots/Screenshot%202026-03-15%20092759.png)
+**Backend (Spring Boot):**
+* Java 17 / 21
+* Spring Boot 3.x
+* **Dependencies:**
+  * **Spring Web:** Membangun RESTful API.
+  * **Spring Data JPA:** Interaksi dan manipulasi data di database.
+  * **MySQL Driver:** Konektor ke database MySQL.
+  * **Lombok:** Mengurangi *boilerplate code* (getter, setter, constructor otomatis).
 
+**Frontend:**
+* **HTML5 & CSS3:** Membangun struktur dan antarmuka web modern bergaya *Card* dan *Toast Notification*.
+* **jQuery 3.6.0:** Manipulasi DOM dan eksekusi HTTP Requests (AJAX) tanpa *refresh* halaman.
 
 ---
 
-## 🛠️ Persiapan dan Cara Menjalankan
+## 📂 Struktur Direktori
+
+Arsitektur backend menerapkan *Layered Pattern* untuk memisahkan tanggung jawab setiap komponen dengan rapi:
+
+* `controller/`: Menerima *request* HTTP dari *client* (Frontend) dan mengembalikan *response* berformat JSON (`ApiResponse`).
+* `entity/`: Kelas Java (`Ktp.java`) yang merepresentasikan struktur tabel di dalam database.
+* `dto/`: Data Transfer Object (`KtpDto.java`) untuk membatasi dan mentransfer data antara *client* dan *server*.
+* `repository/`: Antarmuka komunikasi langsung dengan database menggunakan Spring Data JPA (`KtpRepository.java`). Termasuk *custom query* untuk validasi nomor KTP.
+* `service/`: Antarmuka yang mendefinisikan kerangka logika bisnis aplikasi (`KtpService.java`).
+* `impl/`: Implementasi detail dari antarmuka logika bisnis (`KtpServiceImpl.java`), memuat proses validasi dan manipulasi sebelum masuk ke database.
+* `mapper/`: Kelas utilitas (`KtpMapper.java`) untuk melakukan konversi/pemetaan data antara `Entity` dan `DTO` secara manual agar terkontrol.
+* `util/`: Kelas bantuan seperti `GlobalExceptionHandler.java` untuk menangkap dan mengelola *error runtime* secara terpusat.
+
+---
+## 📖 Dokumentasi REST API
+
+Semua endpoint berjalan di `http://localhost:8080/ktp` dan menggunakan format komunikasi `application/json`. Sistem ini menggunakan standar balikan (response) seragam yang terdiri dari `status`, `message`, dan `data`.
+
+### 1. Mengambil Seluruh Data KTP
+Mengambil daftar semua data penduduk yang ada di dalam database.
+* **Method:** `GET`
+* **Endpoint:** `/ktp`
+* **Response Sukses (200 OK):**
+  ```json
+  {
+    "status": "success",
+    "message": "Data berhasil diambil",
+    "data": [
+      {
+        "id": 1,
+        "nomorKtp": "3273112233445566",
+        "namaLengkap": "Sulthan Awaliya",
+        "alamat": "Jl. Brawijaya No 10, Bantul",
+        "tanggalLahir": "2000-08-15",
+        "jenisKelamin": "Laki-laki"
+      }
+    ]
+  }
+
+## 🚀 Panduan Menjalankan Aplikasi
 
 ### 1. Konfigurasi Database
-1. Buka MySQL server Anda.
-2. Buat database baru dengan menjalankan *query*:
-   ```sql
-   CREATE DATABASE spring;
-📖 Dokumentasi REST API
-API ini berjalan pada http://localhost:8080/ktp dan menerima serta mengirimkan data dalam format application/json.
-
-1. Mengambil Semua Data KTP
-Endpoint: GET /ktp
-
-Response Sukses (200 OK):
-
-JSON
-{
-  "status": "success",
-  "message": "Data berhasil diambil",
-  "data": [
-    {
-      "id": 1,
-      "nomorKtp": "3273112233445566",
-      "namaLengkap": "Budi Santoso",
-      "alamat": "Jl. Merdeka No 1",
-      "tanggalLahir": "1990-05-20",
-      "jenisKelamin": "Laki-laki"
-    }
-  ]
-}
-2. Menambah Data KTP Baru
-Endpoint: POST /ktp
-
-Request Body:
-
-JSON
-{
-  "nomorKtp": "3273112233445566",
-  "namaLengkap": "Budi Santoso",
-  "alamat": "Jl. Merdeka No 1",
-  "tanggalLahir": "1990-05-20",
-  "jenisKelamin": "Laki-laki"
-}
-Response Sukses (200 OK): Mengembalikan objek data KTP yang baru dibuat.
-
-Response Gagal (400 Bad Request): Terjadi jika nomor KTP sudah terdaftar di database.
-
-3. Mengambil Satu Data KTP (Berdasarkan ID)
-Endpoint: GET /ktp/{id}
-
-Response Sukses (200 OK): Mengembalikan satu objek data KTP yang sesuai dengan ID tersebut.
-
-4. Memperbarui Data KTP
-Endpoint: PUT /ktp/{id}
-
-Request Body: Sama seperti metode POST.
-
-Response Sukses (200 OK): Mengembalikan data KTP yang telah diperbarui.
-
-Catatan: Terdapat validasi dari server untuk memastikan NIK yang baru diinput tidak bentrok dengan NIK milik orang lain di database.
-
-5. Menghapus Data KTP
-Endpoint: DELETE /ktp/{id}
-
-Response Sukses (200 OK):
-
-JSON
-{
-  "status": "success",
-  "message": "Data berhasil dihapus",
-  "data": null
-}
+1. Pastikan server MySQL lokal (XAMPP/MySQL Workbench/DBeaver) dalam keadaan aktif.
+2. Buat database baru dengan nama `spring` melalui query: `CREATE DATABASE spring;`
+3. Pastikan konfigurasi pada `src/main/resources/application.properties` sudah sesuai dengan kredensial lokal Anda:
+   ```properties
+   spring.datasource.url=jdbc:mysql://localhost:3306/spring?useSSL=false&serverTimezone=UTC
+   spring.datasource.username=root
+   spring.datasource.password=
+   spring.jpa.hibernate.ddl-auto=update
+   spring.jpa.show-sql=true
